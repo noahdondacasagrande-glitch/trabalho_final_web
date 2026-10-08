@@ -1,20 +1,25 @@
 import {Link} from 'react-router-dom';
+import login from '../assets/images/login.png'
+import detalhes from '../assets/images/detalhes.png'
+import lupa from '../assets/images/Search.png'
 
 const Header = () => {
     return(
         <div className='header'>
             <a className='Logo' href="/">
-                <p>LOGO</p>
+                <img src="" alt="" />
             </a>
             <div className='pesquisa'>
-                <label htmlFor="dados_pesquisa"></label>
-                <input type="text" className='dados_pesquisa' />
+                <label htmlFor="dados_pesquisa">
+                    
+                </label>
+                <input type="text" className='dados_pesquisa' placeholder='Pesquisar'  />
             </div>
             <Link to="/detalhes" className='FAQ'>
-                <p>DETALHES</p>
+                <img src={detalhes} alt="" />
             </Link>
             <Link to="/login" className='login'>
-                <p>LOGIN</p>          
+                <img src={login} alt="" />       
             </Link>
         </div>
 
