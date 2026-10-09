@@ -10,10 +10,8 @@ const Header = () => {
                 <img src="" alt="" />
             </a>
             <div className='pesquisa'>
-                <label htmlFor="dados_pesquisa">
-                    
-                </label>
-                <input type="text" className='dados_pesquisa' placeholder='Pesquisar'  />
+                <label htmlFor="dados_pesquisa"></label>
+                <input type="text" className='dados_pesquisa_com_icone' placeholder='Pesquisar' />
             </div>
             <Link to="/detalhes" className='FAQ'>
                 <img src={detalhes} alt="" />
