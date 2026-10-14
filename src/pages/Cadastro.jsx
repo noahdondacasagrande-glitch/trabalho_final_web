@@ -6,7 +6,6 @@ const Cadastro = () => {
     
     return (
         <div className="corpo-cadastro"> 
-            
             <div className="caixa-cadastro">
                 <h1>Cadastrar</h1>
                 <div className="email">
