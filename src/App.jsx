@@ -8,6 +8,7 @@ import Orcamento from './pages/Orcamento'
 import Produtos from './pages/Produtos'
 import Sobre from './pages/Sobre'
 import Solucoes from './pages/Solucoes'
+import Cadastro from './pages/Cadastro'
 
 
 function App() {
@@ -15,10 +16,11 @@ function App() {
     <>
       <div>
         <Routes>
-          <Route path="/" element={<Home />} /> 
+          <Route path="/" element={<Home />} />
           <Route path="/area_cliente" element={<Area_Cliente />} />
           <Route path="/detalhes" element={<Detalhes />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/orcamento" element={<Orcamento />} />
           <Route path="/produtos" element={<Produtos />} />
           <Route path="/sobre" element={<Sobre />} />

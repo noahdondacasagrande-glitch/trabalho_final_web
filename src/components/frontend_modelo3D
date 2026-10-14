@@ -1,0 +1,32 @@
+import { useState } from "react";
+import Header from "../components/Header";
+import Arquivo3D from "../components/Arquivo3D";
+import Visualizador3D from "../components/Visualizador3D";
+
+const Area_Cliente = () => {
+    const [arquivo, setArquivo] = useState(null);
+    
+    return (
+        <div className="area-cliente">
+            <Header />
+
+            <h1>Orçamento de Impressão 3D</h1>
+
+            <p>
+                Selecione seu modelo 3D para visualizar a peça
+                e consultar suas dimensões.
+            </p>
+
+            <Arquivo3D onArquivoSelecionado={setArquivo} />
+
+            {arquivo && (
+                <Visualizador3D arquivo={arquivo} />
+            )}
+            <h1 className="teste">
+                teste
+            </h1>
+        </div>
+    );
+};
+
+export default Area_Cliente;

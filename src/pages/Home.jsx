@@ -1,16 +1,31 @@
 
-import Header from "../components/Header";
-import Arquivo3D from "../components/Arquivo3D"
+import { useState } from "react";
 
 
-const Home = () => {
+function Home() {
+    const [arquivo, setArquivo] = useState(null);
+
     return (
-         <>
-            <Header />
-            <Arquivo3D />
+        <>
+            <div className="home">
+                <div className="header-home">
+                    <div className="fazer_cadastro">
+                        <a href="/cadastro">
+                            <h1>CADASTRO</h1>
+                        </a>
+                        
+                    </div>
+                    <div className="fazer_login">
+                        <a href="/login">
+                            <h1>LOGIN</h1>
+                        </a>
+                        
+                    </div>
+                </div>
+            </div>
             
-         </>
+        </>
     );
-};
+}
 
 export default Home;

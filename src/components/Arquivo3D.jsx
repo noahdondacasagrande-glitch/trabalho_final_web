@@ -1,54 +1,53 @@
 
 import { useState } from "react";
 
-function Arquivo3D() {
+function Arquivo3D({ onArquivoSelecionado }) {
     const [arquivo, setArquivo] = useState(null);
     const [mensagem, setMensagem] = useState("");
-    const [enviando, setEnviando] = useState(false);
+    const [carregando, setCarregando] = useState(false);
 
-    function selecionarArquivo(event) {
-        const file = event.target.files[0];
+    async function selecionarArquivo(event) {
+        const file = event.target.files?.[0];
 
-        setMensagem("");
-        setArquivo(null);
+        if (!file) return;
 
-        if (!file) {
-            return;
-        }
-
-        const formatosPermitidos = [".stl", ".obj", ".3mf"];
+        const extensoes = [".stl", ".obj", ".3mf"];
         const nome = file.name.toLowerCase();
-
-        const formatoValido = formatosPermitidos.some(
-            formato => nome.endsWith(formato)
+        const extensaoValida = extensoes.some(ext =>
+            nome.endsWith(ext)
         );
 
-        if (!formatoValido) {
+        if (!extensaoValida) {
             setMensagem("Selecione um arquivo STL, OBJ ou 3MF.");
+            setArquivo(null);
+            onArquivoSelecionado(null);
             event.target.value = "";
             return;
         }
 
         if (file.size > 50 * 1024 * 1024) {
             setMensagem("O arquivo deve ter no máximo 50 MB.");
+            setArquivo(null);
+            onArquivoSelecionado(null);
             event.target.value = "";
             return;
         }
 
         setArquivo(file);
-        setMensagem("Arquivo selecionado com sucesso.");
+        setMensagem("Modelo selecionado. Pronto para enviar.");
+        onArquivoSelecionado(file);
     }
 
     async function enviarArquivo() {
         if (!arquivo) {
-            setMensagem("Selecione um arquivo antes de enviar.");
+            setMensagem("Selecione um modelo primeiro.");
             return;
         }
 
         const dados = new FormData();
         dados.append("modelo", arquivo);
 
-        setEnviando(true);
+        setCarregando(true);
         setMensagem("Enviando arquivo...");
 
         try {
@@ -69,49 +68,45 @@ function Arquivo3D() {
             }
 
             setMensagem(
-                `Sucesso! ${resultado.arquivo} foi enviado.`
+                `${resultado.mensagem} Arquivo: ${resultado.nomeOriginal}`
             );
         } catch (erro) {
-            console.error("Erro no envio:", erro);
-
             setMensagem(
-                "Erro ao enviar. Confira se o backend está funcionando."
+                `Erro no envio: ${erro.message}. Confira se o backend está rodando.`
             );
         } finally {
-            setEnviando(false);
+            setCarregando(false);
         }
     }
 
     return (
-        <div>
+        <section>
             <h2>Enviar modelo 3D</h2>
 
             <input
                 type="file"
                 accept=".stl,.obj,.3mf"
                 onChange={selecionarArquivo}
-                disabled={enviando}
             />
 
             {arquivo && (
-                <div>
-                    <p>Arquivo: {arquivo.name}</p>
-                    <p>
-                        Tamanho: {(arquivo.size / 1024 / 1024).toFixed(2)} MB
-                    </p>
-                </div>
+                <p>
+                    Arquivo: {arquivo.name}
+                    <br />
+                    Tamanho: {(arquivo.size / 1024 / 1024).toFixed(2)} MB
+                </p>
             )}
 
             <button
                 type="button"
                 onClick={enviarArquivo}
-                disabled={!arquivo || enviando}
+                disabled={!arquivo || carregando}
             >
-                {enviando ? "Enviando..." : "Enviar modelo"}
+                {carregando ? "Enviando..." : "Enviar e processar"}
             </button>
 
-            {mensagem && <p>{mensagem}</p>}
-        </div>
+            <p role="status">{mensagem}</p>
+        </section>
     );
 }
 

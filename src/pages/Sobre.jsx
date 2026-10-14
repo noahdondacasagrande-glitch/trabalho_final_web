@@ -1,6 +1,7 @@
 import Header from "../components/Header";
 
 const Sobre = () => {
+    
     return (
         <div>
             <Header />

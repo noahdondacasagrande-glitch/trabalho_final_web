@@ -3,6 +3,7 @@ import Header from "../components/Header";
 
 
 const Detalhes = () => {
+   
     return (
         <div>
             <Header />

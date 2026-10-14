@@ -1,6 +1,7 @@
 import Header from "../components/Header";
 
 const Solucoes = () => {
+    
     return (
         <div>
             <Header />
