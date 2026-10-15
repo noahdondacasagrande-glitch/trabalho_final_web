@@ -9,6 +9,7 @@ const Area_Cliente = () => {
     return (
         <div className="area-cliente">
             <Header />
+            <Visualizador3D />
         </div>
     );
 };

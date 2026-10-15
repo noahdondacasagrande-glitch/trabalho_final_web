@@ -6,6 +6,11 @@ const Login = () => {
         var email = document.getElementById("email").value 
         var senha = document.getElementById("senha").value 
 
+        const usuario = {
+            nome : email,
+            senha : senha
+        };
+        localStorage.setItem('usuarioConfig', JSON.stringify(usuario));
                  
     }
     

@@ -291,8 +291,8 @@ function Visualizador3D({ arquivo }) {
                         Volume geométrico estimado: {
                             (
                                 informacoes.volume *
-                                (unidade === "mm" ? 1 : unidade === "cm" ? 0.00001 : 0.000001)
-                            ).toFixed(4)
+                                (unidade === "mm" ? 1 : unidade === "cm" ? 0.001 : 0.000001)
+                            ).toFixed(2)
                         } {unidade}³
                     </p>
 
