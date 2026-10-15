@@ -1,15 +1,16 @@
-import {Link} from 'react-router-dom';
+
 import login from '../assets/images/login.png'
 import detalhes from '../assets/images/detalhes.png'
 import lupa from '../assets/images/Search.png'
+import { Link, Routes, Route } from 'react-router-dom';
 
 const Header = () => {
     return(
         <div className='header'>
-            <a className='Logo' href="/Area_cliente">
+
+            <Link to="/area_cliente" className='Logo'>
                 <h1>LOGO</h1>
-                {/* <img src="" alt="" /> */}
-            </a>
+            </Link>
 
             <div className='separador-header-direita'>
                 <div className='pesquisa'>
