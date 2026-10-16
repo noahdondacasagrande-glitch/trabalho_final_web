@@ -1,10 +1,15 @@
-
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { STLLoader } from "three/addons/loaders/STLLoader.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 import { ThreeMFLoader } from "three/addons/loaders/3MFLoader.js";
+
+const FATOR_PARA_MM = {
+    mm: 1,
+    cm: 10,
+    m: 1000
+};
 
 function Visualizador3D({ arquivo }) {
     const areaRef = useRef(null);
@@ -13,7 +18,7 @@ function Visualizador3D({ arquivo }) {
     const [erro, setErro] = useState("");
 
     useEffect(() => {
-        if (!arquivo || !areaRef.current) return;
+        if (!areaRef.current) return;
 
         let cancelado = false;
         let animationId;
@@ -100,6 +105,12 @@ function Visualizador3D({ arquivo }) {
         }
 
         async function carregarModelo() {
+            if (!arquivo) {
+                setErro("");
+                setInformacoes(null);
+                return;
+            }
+
             try {
                 setErro("");
                 setInformacoes(null);
@@ -241,6 +252,8 @@ function Visualizador3D({ arquivo }) {
         };
     }, [arquivo]);
 
+    const fator = FATOR_PARA_MM[unidade];
+
     return (
         <section>
             <h2>Visualização do modelo 3D</h2>
@@ -256,8 +269,11 @@ function Visualizador3D({ arquivo }) {
                 }}
             />
 
-            {erro && <p role="alert">{erro}</p>}
+            {!arquivo && !erro && (
+                <p>Selecione um modelo STL, OBJ ou 3MF para visualizar.</p>
+            )}
 
+            {erro && <p role="alert">{erro}</p>}
 
             {informacoes && (
                 <div>
@@ -276,24 +292,27 @@ function Visualizador3D({ arquivo }) {
                     </select>
 
                     <p>
-                        Largura X: {(informacoes.x * (unidade === "mm" ? 1 : unidade === "cm" ? 0.1 : 0.001)).toFixed(2)} {unidade}
+                        Largura X: {informacoes.x.toFixed(2)} {unidade}
+                        {" "}({(informacoes.x * fator).toFixed(2)} mm)
                     </p>
 
                     <p>
-                        Altura Y: {(informacoes.y * (unidade === "mm" ? 1 : unidade === "cm" ? 0.1 : 0.001)).toFixed(2)} {unidade}
+                        Altura Y: {informacoes.y.toFixed(2)} {unidade}
+                        {" "}({(informacoes.y * fator).toFixed(2)} mm)
                     </p>
 
                     <p>
-                        Profundidade Z: {(informacoes.z * (unidade === "mm" ? 1 : unidade === "cm" ? 0.1 : 0.001)).toFixed(2)} {unidade}
+                        Profundidade Z: {informacoes.z.toFixed(2)} {unidade}
+                        {" "}({(informacoes.z * fator).toFixed(2)} mm)
                     </p>
 
                     <p>
-                        Volume geométrico estimado: {
-                            (
-                                informacoes.volume *
-                                (unidade === "mm" ? 1 : unidade === "cm" ? 0.001 : 0.000001)
-                            ).toFixed(2)
-                        } {unidade}³
+                        Volume geométrico estimado:{" "}
+                        {informacoes.volume === null
+                            ? "indisponível"
+                            : `${informacoes.volume.toFixed(2)} ${unidade}³ (${(
+                                  informacoes.volume * fator ** 3
+                              ).toFixed(2)} mm³)`}
                     </p>
 
                     <small>
@@ -302,7 +321,6 @@ function Visualizador3D({ arquivo }) {
                     </small>
                 </div>
             )}
-
         </section>
     );
 }

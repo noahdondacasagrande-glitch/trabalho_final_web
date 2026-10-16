@@ -1,10 +1,12 @@
+import express from "express";
+import cors from "cors";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
+import crypto from "crypto";
+import { fileURLToPath } from "url";
 
-const express = require("express");
-const cors = require("cors");
-const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
-const crypto = require("crypto");
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const PORT = 3001;
@@ -55,14 +57,16 @@ app.get("/", (req, res) => {
     });
 });
 
+app.get("/api", (req, res) => {
+    res.json({
+        mensagem: "API disponível localmente!"
+    });
+});
+
 app.post("/api/modelos", (req, res) => {
     upload.single("modelo")(req, res, (erro) => {
         if (erro) {
-            const status = erro instanceof multer.MulterError
-                ? 400
-                : 400;
-
-            return res.status(status).json({
+            return res.status(400).json({
                 erro: erro.message
             });
         }
