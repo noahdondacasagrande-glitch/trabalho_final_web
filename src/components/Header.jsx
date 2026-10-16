@@ -3,6 +3,7 @@ import login from '../assets/images/login.png'
 import detalhes from '../assets/images/detalhes.png'
 import lupa from '../assets/images/Search.png'
 import { Link, Routes, Route } from 'react-router-dom';
+import "../styles/Header.css";
 
 const Header = () => {
     return(
@@ -14,8 +15,13 @@ const Header = () => {
 
             <div className='separador-header-direita'>
                 <div className='pesquisa'>
-                    <label htmlFor="dados_pesquisa"></label>
-                    <input type="text" className='dados_pesquisa_com_icone' placeholder='Pesquisar' />
+                    <label htmlFor="dados_pesquisa">Pesquisar</label>
+                    <input
+                        id="dados_pesquisa"
+                        type="text"
+                        className="dados_pesquisa_com_icone"
+                        placeholder="Pesquisar"
+                    />
                 </div>
                 <Link to="/detalhes" className='FAQ'>
                     <img src={detalhes} alt="" />
