@@ -13,6 +13,7 @@ function Arquivo3D({ onArquivoSelecionado }) {
 
         const extensoes = [".stl", ".obj", ".3mf"];
         const nome = file.name.toLowerCase();
+
         const extensaoValida = extensoes.some(ext =>
             nome.endsWith(ext)
         );
@@ -25,8 +26,8 @@ function Arquivo3D({ onArquivoSelecionado }) {
             return;
         }
 
-        if (file.size > 50 * 1024 * 1024) {
-            setMensagem("O arquivo deve ter no máximo 50 MB.");
+        if (file.size > 4 * 1024 * 1024) {
+            setMensagem("O arquivo deve ter no máximo 4 MB.");
             setArquivo(null);
             onArquivoSelecionado(null);
             event.target.value = "";
@@ -51,19 +52,18 @@ function Arquivo3D({ onArquivoSelecionado }) {
         setMensagem("Enviando arquivo...");
 
         try {
-            const resposta = await fetch(
-                "http://localhost:3001/api/modelos",
-                {
-                    method: "POST",
-                    body: dados
-                }
-            );
+            const resposta = await fetch("/api/modelos", {
+                method: "POST",
+                body: dados
+            });
 
             const resultado = await resposta.json();
 
             if (!resposta.ok) {
                 throw new Error(
-                    resultado.erro || "Não foi possível enviar o arquivo."
+                    resultado.erro ||
+                    resultado.message ||
+                    "Não foi possível enviar o arquivo."
                 );
             }
 
@@ -72,7 +72,7 @@ function Arquivo3D({ onArquivoSelecionado }) {
             );
         } catch (erro) {
             setMensagem(
-                `Erro no envio: ${erro.message}. Confira se o backend está rodando.`
+                `Erro no envio: ${erro.message}. Verifique a API publicada.`
             );
         } finally {
             setCarregando(false);
