@@ -8,7 +8,7 @@ import { STLLoader } from "three/addons/loaders/STLLoader.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 import { ThreeMFLoader } from "three/addons/loaders/3MFLoader.js";
 
-// Fatores de conversão para milímetros
+// Fatores de conversão para milímetros.
 const FATOR_PARA_MM = {
     mm: 1,
     cm: 10,
@@ -23,12 +23,12 @@ function Visualizador3D({ arquivo }) {
     const [erro, setErro] = useState("");
 
     useEffect(() => {
-        if (!areaRef.current) return;
+        const area = areaRef.current;
+
+        if (!area) return;
 
         let cancelado = false;
         let animationId;
-
-        const area = areaRef.current;
 
         const cena = new THREE.Scene();
         cena.background = new THREE.Color(0xf1f3f5);
@@ -36,7 +36,7 @@ function Visualizador3D({ arquivo }) {
         const camera = new THREE.PerspectiveCamera(
             45,
             area.clientWidth / Math.max(area.clientHeight, 1),
-            0.1,
+            0.01,
             1000000
         );
 
@@ -58,10 +58,18 @@ function Visualizador3D({ arquivo }) {
         area.replaceChildren(renderer.domElement);
 
         cena.add(
-            new THREE.HemisphereLight(0xffffff, 0x666666, 2)
+            new THREE.HemisphereLight(
+                0xffffff,
+                0x666666,
+                2
+            )
         );
 
-        const luz = new THREE.DirectionalLight(0xffffff, 2);
+        const luz = new THREE.DirectionalLight(
+            0xffffff,
+            2
+        );
+
         luz.position.set(100, 200, 150);
         cena.add(luz);
 
@@ -81,6 +89,95 @@ function Visualizador3D({ arquivo }) {
 
         cena.add(grade);
 
+        // Remove triângulos sem área do STL.
+        // Isso não altera a escala da geometria válida.
+        function limparGeometriaSTL(geometriaOriginal) {
+            const posicoes =
+                geometriaOriginal.getAttribute("position");
+
+            if (!posicoes || posicoes.count < 3) {
+                geometriaOriginal.dispose();
+
+                throw new Error(
+                    "O arquivo STL não contém vértices suficientes."
+                );
+            }
+
+            const verticesValidos = [];
+
+            const a = new THREE.Vector3();
+            const b = new THREE.Vector3();
+            const c = new THREE.Vector3();
+
+            const ab = new THREE.Vector3();
+            const ac = new THREE.Vector3();
+            const cruzado = new THREE.Vector3();
+
+            for (
+                let i = 0;
+                i + 2 < posicoes.count;
+                i += 3
+            ) {
+                a.fromBufferAttribute(posicoes, i);
+                b.fromBufferAttribute(posicoes, i + 1);
+                c.fromBufferAttribute(posicoes, i + 2);
+
+                // Descarta triângulos com coordenadas inválidas.
+                const coordenadasValidas = [
+                    a.x, a.y, a.z,
+                    b.x, b.y, b.z,
+                    c.x, c.y, c.z
+                ].every(Number.isFinite);
+
+                if (!coordenadasValidas) {
+                    continue;
+                }
+
+                ab.subVectors(b, a);
+                ac.subVectors(c, a);
+                cruzado.crossVectors(ab, ac);
+
+                const areaDobrada = cruzado.length();
+
+                // Triângulos sem área não formam uma superfície.
+                if (
+                    !Number.isFinite(areaDobrada) ||
+                    areaDobrada <= 1e-10
+                ) {
+                    continue;
+                }
+
+                verticesValidos.push(
+                    a.x, a.y, a.z,
+                    b.x, b.y, b.z,
+                    c.x, c.y, c.z
+                );
+            }
+
+            geometriaOriginal.dispose();
+
+            if (verticesValidos.length === 0) {
+                throw new Error(
+                    "O arquivo STL não contém triângulos válidos."
+                );
+            }
+
+            const geometria = new THREE.BufferGeometry();
+
+            geometria.setAttribute(
+                "position",
+                new THREE.Float32BufferAttribute(
+                    verticesValidos,
+                    3
+                )
+            );
+
+            geometria.computeVertexNormals();
+
+            return geometria;
+        }
+
+        // Calcula o volume geométrico da malha.
         function calcularVolume(raiz) {
             let volumeTotal = 0;
             let encontrouMalha = false;
@@ -88,12 +185,20 @@ function Visualizador3D({ arquivo }) {
             raiz.updateMatrixWorld(true);
 
             raiz.traverse((objeto) => {
-                if (!objeto.isMesh || !objeto.geometry) return;
+                if (
+                    !objeto.isMesh ||
+                    !objeto.geometry
+                ) {
+                    return;
+                }
 
                 const geometria = objeto.geometry;
-                const posicoes = geometria.getAttribute("position");
+                const posicoes =
+                    geometria.getAttribute("position");
 
-                if (!posicoes || posicoes.count < 3) return;
+                if (!posicoes || posicoes.count < 3) {
+                    return;
+                }
 
                 const indice = geometria.index;
                 const matriz = objeto.matrixWorld;
@@ -103,11 +208,12 @@ function Visualizador3D({ arquivo }) {
                 const a = new THREE.Vector3();
                 const b = new THREE.Vector3();
                 const c = new THREE.Vector3();
+
                 const cruzado = new THREE.Vector3();
 
                 const triCount = indice
-                    ? indice.count / 3
-                    : posicoes.count / 3;
+                    ? Math.floor(indice.count / 3)
+                    : Math.floor(posicoes.count / 3);
 
                 for (let i = 0; i < triCount; i++) {
                     const ia = indice
@@ -133,14 +239,19 @@ function Visualizador3D({ arquivo }) {
 
                     cruzado.crossVectors(b, c);
 
-                    volumeAssinado += a.dot(cruzado) / 6;
+                    volumeAssinado +=
+                        a.dot(cruzado) / 6;
                 }
 
-                volumeTotal += Math.abs(volumeAssinado);
-                encontrouMalha = true;
+                if (Number.isFinite(volumeAssinado)) {
+                    volumeTotal += Math.abs(volumeAssinado);
+                    encontrouMalha = true;
+                }
             });
 
-            return encontrouMalha ? volumeTotal : null;
+            return encontrouMalha
+                ? volumeTotal
+                : null;
         }
 
         async function carregarModelo() {
@@ -165,83 +276,30 @@ function Visualizador3D({ arquivo }) {
 
                 if (cancelado) return;
 
+                // Carregamento de arquivos STL.
                 if (extensao === "stl") {
-                    
-                    if (extensao === "stl") {
-                        const geometriaOriginal = new STLLoader().parse(buffer);
-                        const posicoes = geometriaOriginal.getAttribute("position");
-                        const verticesValidos = [];
+                    const geometriaOriginal =
+                        new STLLoader().parse(buffer);
 
-                        const a = new THREE.Vector3();
-                        const b = new THREE.Vector3();
-                        const c = new THREE.Vector3();
-                        const ab = new THREE.Vector3();
-                        const ac = new THREE.Vector3();
-                        const cruzado = new THREE.Vector3();
+                    const geometria =
+                        limparGeometriaSTL(geometriaOriginal);
 
-                        for (let i = 0; i + 2 < posicoes.count; i += 3) {
-                            a.fromBufferAttribute(posicoes, i);
-                            b.fromBufferAttribute(posicoes, i + 1);
-                            c.fromBufferAttribute(posicoes, i + 2);
-
-                            ab.subVectors(b, a);
-                            ac.subVectors(c, a);
-                            cruzado.crossVectors(ab, ac);
-
-                            // Descarta triângulos sem área ou com coordenadas inválidas.
-                            const areaDobrada = cruzado.length();
-
-                            if (
-                                !Number.isFinite(areaDobrada) ||
-                                areaDobrada <= 1e-10
-                            ) {
-                                continue;
-                            }
-
-                            verticesValidos.push(
-                                a.x, a.y, a.z,
-                                b.x, b.y, b.z,
-                                c.x, c.y, c.z
-                            );
-                        }
-
-                        geometriaOriginal.dispose();
-
-                        if (verticesValidos.length === 0) {
-                            throw new Error(
-                                "O arquivo STL não contém triângulos válidos."
-                            );
-                        }
-
-                        const geometria = new THREE.BufferGeometry();
-
-                        geometria.setAttribute(
-                            "position",
-                            new THREE.Float32BufferAttribute(verticesValidos, 3)
-                        );
-
-                        geometria.computeVertexNormals();
-
-                        const material = new THREE.MeshStandardMaterial({
+                    const material =
+                        new THREE.MeshStandardMaterial({
                             color: 0x4b82c3,
                             metalness: 0.15,
                             roughness: 0.55
                         });
 
-                        objeto = new THREE.Mesh(geometria, material);
-                    }
+                    objeto = new THREE.Mesh(
+                        geometria,
+                        material
+                    );
 
-
-                    const material = new THREE.MeshStandardMaterial({
-                        color: 0x4b82c3,
-                        metalness: 0.15,
-                        roughness: 0.55
-                    });
-
-                    objeto = new THREE.Mesh(geometria, material);
-
+                // Carregamento de arquivos OBJ.
                 } else if (extensao === "obj") {
-                    const texto = new TextDecoder().decode(buffer);
+                    const texto =
+                        new TextDecoder().decode(buffer);
 
                     objeto = new OBJLoader().parse(texto);
 
@@ -256,18 +314,43 @@ function Visualizador3D({ arquivo }) {
                         }
                     });
 
+                // Carregamento de arquivos 3MF.
                 } else if (extensao === "3mf") {
                     objeto = new ThreeMFLoader().parse(buffer);
 
                 } else {
-                    throw new Error("Formato não suportado.");
+                    throw new Error(
+                        "Formato não suportado. Utilize STL, OBJ ou 3MF."
+                    );
                 }
 
-                if (cancelado) return;
+                if (cancelado) {
+                    objeto.traverse((item) => {
+                        if (item.geometry) {
+                            item.geometry.dispose();
+                        }
+
+                        if (item.material) {
+                            const materiais = Array.isArray(
+                                item.material
+                            )
+                                ? item.material
+                                : [item.material];
+
+                            materiais.forEach((material) => {
+                                material.dispose();
+                            });
+                        }
+                    });
+
+                    return;
+                }
 
                 objeto.updateMatrixWorld(true);
 
-                const caixa = new THREE.Box3().setFromObject(objeto);
+                // Mede a extensão da geometria válida.
+                const caixa = new THREE.Box3()
+                    .setFromObject(objeto);
 
                 if (caixa.isEmpty()) {
                     throw new Error(
@@ -285,6 +368,7 @@ function Visualizador3D({ arquivo }) {
 
                 // Centraliza o modelo sem alterar sua escala.
                 objeto.position.sub(centro);
+
                 cena.add(objeto);
 
                 const maiorDimensao = Math.max(
@@ -294,7 +378,7 @@ function Visualizador3D({ arquivo }) {
                     1
                 );
 
-                // Ajusta a câmera para enquadrar o modelo.
+                // Enquadra o objeto na câmera.
                 camera.position.set(
                     maiorDimensao * 1.5,
                     maiorDimensao * 1.2,
@@ -307,18 +391,22 @@ function Visualizador3D({ arquivo }) {
                 );
 
                 camera.far = maiorDimensao * 100;
+
                 camera.updateProjectionMatrix();
 
                 controles.target.set(0, 0, 0);
                 controles.update();
 
-                grade.scale.setScalar(maiorDimensao / 200);
+                grade.scale.setScalar(
+                    maiorDimensao / 200
+                );
+
                 grade.position.y = -tamanho.y / 2;
 
                 const volume = calcularVolume(objeto);
 
-                // Guarda as medidas originais do modelo.
-                // A mudança de unidade não modifica estes valores.
+                // Mantém as medidas geométricas originais.
+                // O seletor não modifica o modelo 3D.
                 setInformacoes({
                     x: tamanho.x,
                     y: tamanho.y,
@@ -332,11 +420,36 @@ function Visualizador3D({ arquivo }) {
                         `Não foi possível ler o modelo: ${e.message}`
                     );
                 }
+
+                if (objeto && !cena.children.includes(objeto)) {
+                    objeto.traverse((item) => {
+                        if (item.geometry) {
+                            item.geometry.dispose();
+                        }
+
+                        if (item.material) {
+                            const materiais = Array.isArray(
+                                item.material
+                            )
+                                ? item.material
+                                : [item.material];
+
+                            materiais.forEach((material) => {
+                                material.dispose();
+                            });
+                        }
+                    });
+                }
             }
         }
 
         function redimensionar() {
-            if (!area.clientWidth || !area.clientHeight) return;
+            if (
+                !area.clientWidth ||
+                !area.clientHeight
+            ) {
+                return;
+            }
 
             camera.aspect =
                 area.clientWidth / area.clientHeight;
@@ -359,6 +472,7 @@ function Visualizador3D({ arquivo }) {
         }
 
         const observador = new ResizeObserver(redimensionar);
+
         observador.observe(area);
 
         carregarModelo();
@@ -377,7 +491,9 @@ function Visualizador3D({ arquivo }) {
                 }
 
                 if (objeto.material) {
-                    const materiais = Array.isArray(objeto.material)
+                    const materiais = Array.isArray(
+                        objeto.material
+                    )
                         ? objeto.material
                         : [objeto.material];
 
@@ -392,12 +508,11 @@ function Visualizador3D({ arquivo }) {
         };
     }, [arquivo]);
 
-    // O fator representa quantos milímetros existem
-    // em uma unidade selecionada.
+    // Fator que indica quantos milímetros existem
+    // em cada unidade selecionada.
     const fator = FATOR_PARA_MM[unidade];
 
-    // Converte as dimensões de mm para a unidade escolhida.
-    // O modelo 3D não é redimensionado.
+    // Conversão das dimensões para a unidade escolhida.
     const largura = informacoes
         ? informacoes.x / fator
         : 0;
@@ -410,10 +525,11 @@ function Visualizador3D({ arquivo }) {
         ? informacoes.z / fator
         : 0;
 
-    // O volume exige conversão cúbica.
-    const volumeConvertido = informacoes?.volume != null
-        ? informacoes.volume / (fator ** 3)
-        : null;
+    // Conversão cúbica do volume.
+    const volumeConvertido =
+        informacoes?.volume != null
+            ? informacoes.volume / (fator ** 3)
+            : null;
 
     return (
         <section>
@@ -471,18 +587,21 @@ function Visualizador3D({ arquivo }) {
 
                     <p>
                         Largura X: {largura.toFixed(2)} {unidade}
-                        {" "}({informacoes.x.toFixed(2)} mm)
+                        {" "}(
+                        {informacoes.x.toFixed(2)} mm)
                     </p>
 
                     <p>
                         Altura Y: {altura.toFixed(2)} {unidade}
-                        {" "}({informacoes.y.toFixed(2)} mm)
+                        {" "}(
+                        {informacoes.y.toFixed(2)} mm)
                     </p>
 
                     <p>
                         Profundidade Z:{" "}
                         {profundidade.toFixed(2)} {unidade}
-                        {" "}({informacoes.z.toFixed(2)} mm)
+                        {" "}(
+                        {informacoes.z.toFixed(2)} mm)
                     </p>
 
                     <p>
@@ -494,12 +613,14 @@ function Visualizador3D({ arquivo }) {
                     </p>
 
                     <small>
-                        As medidas são interpretadas como milímetros
-                        na origem. Confirme a unidade original do
-                        modelo, pois os arquivos STL não informam
-                        necessariamente essa unidade. A conversão
-                        altera apenas a exibição, não a escala
-                        física do modelo.
+                        A conversão altera apenas a unidade
+                        de exibição, não a escala do modelo.
+                        Os valores são interpretados nas
+                        unidades geométricas de origem como
+                        milímetros. Arquivos STL não informam
+                        necessariamente sua unidade original.
+                        O volume estimado também depende da
+                        integridade e do fechamento da malha.
                     </small>
                 </div>
             )}
