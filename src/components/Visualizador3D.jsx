@@ -166,7 +166,71 @@ function Visualizador3D({ arquivo }) {
                 if (cancelado) return;
 
                 if (extensao === "stl") {
-                    const geometria = new STLLoader().parse(buffer);
+                    
+                    if (extensao === "stl") {
+                        const geometriaOriginal = new STLLoader().parse(buffer);
+                        const posicoes = geometriaOriginal.getAttribute("position");
+                        const verticesValidos = [];
+
+                        const a = new THREE.Vector3();
+                        const b = new THREE.Vector3();
+                        const c = new THREE.Vector3();
+                        const ab = new THREE.Vector3();
+                        const ac = new THREE.Vector3();
+                        const cruzado = new THREE.Vector3();
+
+                        for (let i = 0; i + 2 < posicoes.count; i += 3) {
+                            a.fromBufferAttribute(posicoes, i);
+                            b.fromBufferAttribute(posicoes, i + 1);
+                            c.fromBufferAttribute(posicoes, i + 2);
+
+                            ab.subVectors(b, a);
+                            ac.subVectors(c, a);
+                            cruzado.crossVectors(ab, ac);
+
+                            // Descarta triângulos sem área ou com coordenadas inválidas.
+                            const areaDobrada = cruzado.length();
+
+                            if (
+                                !Number.isFinite(areaDobrada) ||
+                                areaDobrada <= 1e-10
+                            ) {
+                                continue;
+                            }
+
+                            verticesValidos.push(
+                                a.x, a.y, a.z,
+                                b.x, b.y, b.z,
+                                c.x, c.y, c.z
+                            );
+                        }
+
+                        geometriaOriginal.dispose();
+
+                        if (verticesValidos.length === 0) {
+                            throw new Error(
+                                "O arquivo STL não contém triângulos válidos."
+                            );
+                        }
+
+                        const geometria = new THREE.BufferGeometry();
+
+                        geometria.setAttribute(
+                            "position",
+                            new THREE.Float32BufferAttribute(verticesValidos, 3)
+                        );
+
+                        geometria.computeVertexNormals();
+
+                        const material = new THREE.MeshStandardMaterial({
+                            color: 0x4b82c3,
+                            metalness: 0.15,
+                            roughness: 0.55
+                        });
+
+                        objeto = new THREE.Mesh(geometria, material);
+                    }
+
 
                     const material = new THREE.MeshStandardMaterial({
                         color: 0x4b82c3,
