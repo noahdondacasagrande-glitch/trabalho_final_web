@@ -14,14 +14,14 @@ function Arquivo3D({ onArquivoSelecionado }) {
         const extensoes = [".stl", ".obj", ".3mf"];
         const nome = file.name.toLowerCase();
 
-        const extensaoValida = extensoes.some(ext =>
+        const extensaoValida = extensoes.some((ext) =>
             nome.endsWith(ext)
         );
 
         if (!extensaoValida) {
             setMensagem("Selecione um arquivo STL, OBJ ou 3MF.");
             setArquivo(null);
-            onArquivoSelecionado(null);
+            onArquivoSelecionado?.(null);
             event.target.value = "";
             return;
         }
@@ -29,14 +29,14 @@ function Arquivo3D({ onArquivoSelecionado }) {
         if (file.size > 4 * 1024 * 1024) {
             setMensagem("O arquivo deve ter no máximo 4 MB.");
             setArquivo(null);
-            onArquivoSelecionado(null);
+            onArquivoSelecionado?.(null);
             event.target.value = "";
             return;
         }
 
         setArquivo(file);
         setMensagem("Modelo selecionado. Pronto para enviar.");
-        onArquivoSelecionado(file);
+        onArquivoSelecionado?.(file);
     }
 
     async function enviarArquivo() {
@@ -57,23 +57,52 @@ function Arquivo3D({ onArquivoSelecionado }) {
                 body: dados
             });
 
-            const resultado = await resposta.json();
+            // Lê o corpo uma única vez e aceita respostas
+            // JSON ou texto simples, sem quebrar se vier vazio.
+            const texto = await resposta.text();
+
+            let resultado = {};
+
+            if (texto.trim()) {
+                try {
+                    resultado = JSON.parse(texto);
+                } catch {
+                    throw new Error(
+                        `A API retornou uma resposta inválida (HTTP ${resposta.status}).`
+                    );
+                }
+            }
 
             if (!resposta.ok) {
                 throw new Error(
                     resultado.erro ||
                     resultado.message ||
-                    "Não foi possível enviar o arquivo."
+                    `Falha na API (HTTP ${resposta.status}).`
+                );
+            }
+
+            if (!texto.trim()) {
+                throw new Error(
+                    "A API respondeu sem conteúdo. Verifique a rota publicada."
+                );
+            }
+
+            if (resultado.erro) {
+                throw new Error(resultado.erro);
+            }
+
+            if (!resultado.nomeOriginal) {
+                throw new Error(
+                    resultado.mensagem ||
+                    "A API respondeu, mas não confirmou o recebimento do arquivo."
                 );
             }
 
             setMensagem(
-                `${resultado.mensagem} Arquivo: ${resultado.nomeOriginal}`
+                `${resultado.mensagem || "Arquivo recebido com sucesso!"} Arquivo: ${resultado.nomeOriginal}`
             );
         } catch (erro) {
-            setMensagem(
-                `Erro no envio: ${erro.message}. Verifique a API publicada.`
-            );
+            setMensagem(`Erro no envio: ${erro.message}`);
         } finally {
             setCarregando(false);
         }
@@ -87,6 +116,7 @@ function Arquivo3D({ onArquivoSelecionado }) {
                 type="file"
                 accept=".stl,.obj,.3mf"
                 onChange={selecionarArquivo}
+                disabled={carregando}
             />
 
             {arquivo && (
@@ -105,7 +135,9 @@ function Arquivo3D({ onArquivoSelecionado }) {
                 {carregando ? "Enviando..." : "Enviar e processar"}
             </button>
 
-            <p role="status">{mensagem}</p>
+            <p role="status" aria-live="polite">
+                {mensagem}
+            </p>
         </section>
     );
 }
