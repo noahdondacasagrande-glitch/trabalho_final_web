@@ -4,13 +4,14 @@ import detalhes from '../assets/images/detalhes.png'
 import lupa from '../assets/images/Search.png'
 import { Link, Routes, Route } from 'react-router-dom';
 import "../styles/Header.css";
+import logo from '../assets/images/logo.png'
 
 const Header = () => {
     return(
         <div className='header'>
 
             <Link to="/area_cliente" className='Logo'>
-                <h1>LOGO</h1>
+                <img src={logo} alt="" />
             </Link>
 
             <div className='separador-header-direita'>
