@@ -75,7 +75,8 @@ const Login = () => {
                     </div>
 
                     <div className="botao-entrar">
-                        <button onClick={login}>Entrar</button>
+                        <a href="/area_cliente">entrar</a>
+                        <button >Entrar</button>
                     </div>
 
                     <div className="link-cadastro">
