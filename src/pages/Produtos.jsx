@@ -5,6 +5,8 @@ import carrinho from "../assets/images/carrinho.png"
 import detalhes from "../assets/images/detalhes.png";
 import login from "../assets/images/login.png";
 import Card from "../components/Card_objeto3D"
+import Arquivo3D from "../components/Arquivo3D.jsx"
+import Visualizador3D from "../components/Visualizador3D.jsx"
 
 const Produtos = () => {
     return (

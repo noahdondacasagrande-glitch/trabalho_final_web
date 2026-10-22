@@ -75,7 +75,7 @@ const Login = () => {
                     </div>
 
                     <div className="botao-entrar">
-                        <a href="/area_cliente">entrar</a>
+                        <a href="/produtos">entrar</a>
                         <button >Entrar</button>
                     </div>
 

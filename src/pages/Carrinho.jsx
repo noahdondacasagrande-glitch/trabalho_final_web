@@ -12,7 +12,7 @@ const Carrinho = () => {
                 </div>
                 <span></span>
                 <div className="botao-carrinho-enviar">
-                    <button onClick={href="/orcamento"}>PAGAR</button>
+                    <button>PAGAR</button>
                 </div>
             </div>
 
