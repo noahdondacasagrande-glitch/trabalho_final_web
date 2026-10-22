@@ -9,6 +9,8 @@ import Produtos from './pages/Produtos'
 import Sobre from './pages/Sobre'
 import Solucoes from './pages/Solucoes'
 import Cadastro from './pages/Cadastro'
+import Carrinho from './pages/Carrinho';
+import Fale_Conosco from './pages/Fale_Conosco';
 
 
 function App() {
@@ -25,6 +27,8 @@ function App() {
           <Route path="/produtos" element={<Produtos />} />
           <Route path="/sobre" element={<Sobre />} />
           <Route path="/solucoes" element={<Solucoes />} />
+          <Route path="/carrinho" element={<Carrinho />} />
+          <Route path="/fale_conosco" element={<Fale_Conosco />} />
         </Routes>
       </div>
 

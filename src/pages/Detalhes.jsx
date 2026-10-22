@@ -24,10 +24,10 @@ const Detalhes = () => {
                 </div>
             </div>
             <div className="footer-detalhes">
-                <Link to="/solucoes" className="footer-1-sobre">
+                <Link to="/solucoes" className="footer-1detalhes">
                     <p>Problemas e resoluções encontrados </p>
                 </Link>
-                <Link to="/sobre" className="footer-2-sobre">
+                <Link to="/sobre" className="footer-2-detalhes">
                     <p>Objetivo da empresa</p>
                 </Link>
             </div>
