@@ -592,7 +592,130 @@
     margin: 0;
 }
 
+/* card-produtos */
 
+.card_objeto3D{
+    max-width: 550px;
+    max-height: 660px; 
+    height: 100%;
+    width: 100%;
+    background-color: #D9D9D9;
+    display: flex;
+    justify-content: flex-start; /* em coluna, isso é o eixo vertical */
+    align-items: center;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 0;
+    overflow: hidden; /* para o fundo cinza respeitar o border-radius */
+    margin: 40px;
+}
 
+.envelopar-card{
+    width: 423px;
+    height: 429px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F6F6F6;
+    border-radius: 5px;
+    margin-top: 20px; /* opcional, espaço no topo */
+    margin-bottom: 20px;
+}
 
+.falsa-descricao{
+    width: 100%;
+    height: 166px;
+    background-color: #737373;
+    max-width: 550px;
+    margin-top: auto; /* empurra para o fundo */
+    padding: 0 0 10px 10px;
+}
 
+.botao-card-falso{
+    display: flex;
+    justify-content: right;
+}
+
+.botao-card-falso button{
+    width: 219px;
+    height: 62px;
+    margin-top: 80px;
+    margin-right: 20px;
+    background-color: #D9D9D9;
+    border: 0px transparent;
+}
+/* produtos */
+
+.corpo-produtos{
+    background-color: #709BFD;
+}
+
+.produto.cards{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px;
+}
+.faixa1-produtos{
+    display: flex;
+    flex-direction: row;
+    padding: 40px;
+}
+
+.faixa2-produtos{
+    display: flex;
+    flex-direction: row;
+    padding: 40px;
+}
+
+.faixa3-produtos{
+    display: flex;
+    flex-direction: row;
+    padding: 40px;
+
+}
+
+.faixa4-produtos{
+    display: flex;
+    flex-direction: row;
+    padding: 40px;
+
+}
+
+.footer-produtos{
+    width: 100%;
+    height: 151px;
+    background-color: #366FF3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    justify-content: space-evenly;
+    margin-top: 80px;
+   
+}
+
+.produtos-para-solucoes{
+    text-decoration: none;
+    color: #ffffff;
+}
+.produtos-para-sobre{
+    text-decoration: none;
+    color: #ffffff;
+}
+.produtos-para-detalhes{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+/* cadastro */
+.corpo-cadastro{
+    background-color: #9CBAFF;
+    height: 100vh;
+}
+
+.coisas-cadastro{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}

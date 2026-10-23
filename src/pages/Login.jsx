@@ -2,6 +2,7 @@ import logo from "../assets/images/logo.png";
 import google_logo from "../assets/images/google_logo.png";
 import email from "../assets/images/email_logo.png";
 import oculto from "../assets/images/oculto.png";
+import {Link} from "react-router-dom"
 
 const Login = () => {
     function login() {
@@ -75,8 +76,10 @@ const Login = () => {
                     </div>
 
                     <div className="botao-entrar">
-                        <a href="/produtos">entrar</a>
-                        <button >Entrar</button>
+                        <Link to="/produtos">
+                            <button >Entrar</button>
+                        </Link>
+                        
                     </div>
 
                     <div className="link-cadastro">

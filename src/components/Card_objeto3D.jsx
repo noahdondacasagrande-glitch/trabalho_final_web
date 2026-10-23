@@ -10,13 +10,15 @@ const Card_objeto3D = () => {
                 <div className="um-card-menor">
                     <img src={caixa} alt="" />
                 </div>
-                <div className="falsa-descrição">
-                    <div className="titulo-card-falso">
 
-                    </div>
-                </div>
+                
 
             </div>
+            <div className="falsa-descricao">
+                    <div className="botao-card-falso">
+                        <button type="button">Comprar</button>
+                    </div>
+                </div>
         </div>
     );
 };
