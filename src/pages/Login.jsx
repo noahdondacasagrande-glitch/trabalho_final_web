@@ -71,9 +71,6 @@ const Login = () => {
                         </div>
                     </div>
 
-                    <div className="esqueci-senha">
-                        <p>Esqueci minha senha</p>
-                    </div>
 
                     <div className="botao-entrar">
                         <Link to="/produtos">

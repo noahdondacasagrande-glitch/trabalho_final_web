@@ -276,12 +276,6 @@
     border-color: transparent;
 }
 
-.esqueci-senha{
-    margin-top: 8px;
-    width: 360px;
-    font-size: 16px;
-    color: #000000;
-}
 
 .conteudo-conta-login button{
     width: 345px;
@@ -714,8 +708,15 @@
     height: 100vh;
 }
 
-.coisas-cadastro{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+.titulo-cadastro h1{
+    font-size: 48px;
+}
+.titulo-cadastro p{
+    font-size: 24px;
+}
+.formulario-cadastro{
+    font-size: 24px;
+}
+.formulario-cadastro input{
+
 }
