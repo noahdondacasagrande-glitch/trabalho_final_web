@@ -6,6 +6,7 @@ import logo from "../assets/images/logo.png";
 import carrinho from "../assets/images/carrinho.png";
 import detalhes from "../assets/images/detalhes.png";
 import login from "../assets/images/login.png";
+import fala from "../assets/images/fala.png"
 
 import Card from "../components/Card_objeto3D";
 import Arquivo3D from "../components/Arquivo3D.jsx";
@@ -33,6 +34,9 @@ const Produtos = () => {
                                 placeholder="Pesquisar"
                             />
                         </div>
+                        <Link to="/fale_conosco" className="fala-imagem">
+                            <img src={fala} alt="" />
+                        </Link>
 
                         <Link to="/carrinho">
                             <img src={carrinho} alt="Carrinho" />
