@@ -14,10 +14,10 @@ const Cadastro = () => {
                     <p>Os campos abaixo são essenciais paa criarmos sua conta SHARK3D</p>
                 </div>
                 <div className="formulario-cadastro">
-                    <div className="linha-siperior-cadastro">
+                    <div className="linha-superior-cadastro">
                         <div className="informe-CPF-cadastro">
                             <label htmlFor="">Informe seu CPF ou CNPJ</label>
-                            <input type="nunber" />
+                            <input type="nunber" placeholder="000.000.000-00"/>
                         </div>
                         <div className="informe-telefone-cadastro">
                             <label htmlFor="">Telefone celular</label>

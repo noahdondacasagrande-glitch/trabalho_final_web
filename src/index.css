@@ -6,6 +6,10 @@
     box-sizing: border-box;
 }
 
+.fala-imagem img{
+    width: 49px;
+    height: 49px;
+}
 .header{
     width: 100%;
     max-height: 100px;
@@ -595,12 +599,12 @@
     width: 100%;
     background-color: #D9D9D9;
     display: flex;
-    justify-content: flex-start; /* em coluna, isso é o eixo vertical */
+    justify-content: flex-start; 
     align-items: center;
     flex-direction: column;
     border-radius: 10px;
     padding: 0;
-    overflow: hidden; /* para o fundo cinza respeitar o border-radius */
+    overflow: hidden; 
     margin: 40px;
 }
 
@@ -612,7 +616,7 @@
     align-items: center;
     background-color: #F6F6F6;
     border-radius: 5px;
-    margin-top: 20px; /* opcional, espaço no topo */
+    margin-top: 20px; 
     margin-bottom: 20px;
 }
 
@@ -621,7 +625,7 @@
     height: 166px;
     background-color: #737373;
     max-width: 550px;
-    margin-top: auto; /* empurra para o fundo */
+    margin-top: auto;
     padding: 0 0 10px 10px;
 }
 
@@ -703,20 +707,221 @@
 }
 
 /* cadastro */
-.corpo-cadastro{
+/* cadastro */
+.corpo-cadastro {
     background-color: #9CBAFF;
-    height: 100vh;
+    min-height: 100vh;
+    width: 100%;
 }
 
-.titulo-cadastro h1{
+.coisas-cadastro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px 60px;
+}
+
+/* título */
+.titulo-cadastro {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.titulo-cadastro h1 {
+    font-size: 48px;
+    font-weight: 400;
+    margin-bottom: 12px;
+}
+
+.titulo-cadastro p {
+    font-size: 24px;
+}
+
+/* formulário: 360 + 84 + 360 = 804px, mesma largura do campo de senha */
+.formulario-cadastro {
+    width: 804px;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    font-size: 20px;
+}
+
+/* linhas com dois campos lado a lado */
+.linha-superior-cadastro,
+.linha-secundaria-cadastro {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 84px;
+}
+
+/* cada campo: label em cima, input embaixo */
+.informe-CPF-cadastro,
+.informe-telefone-cadastro,
+.nome-cadastro,
+.sobrenome-cadastro,
+.criar-senha-cadastro {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.informe-CPF-cadastro label,
+.informe-telefone-cadastro label,
+.nome-cadastro label,
+.sobrenome-cadastro label,
+.criar-senha-cadastro label {
+    align-self: flex-start;
+}
+
+/* inputs */
+.informe-CPF-cadastro input,
+.informe-telefone-cadastro input,
+.nome-cadastro input,
+.sobrenome-cadastro input {
+    width: 360px;
+    height: 56px;
+}
+
+.criar-senha-cadastro input {
+    width: 100%;
+    height: 56px;
+}
+
+.formulario-cadastro input {
+    box-sizing: border-box;
+    padding: 0 12px;
+    font-size: 20px;
+    background-color: #D9D9D9;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+.formulario-cadastro input::placeholder {
+    color: #000000;
+    opacity: 1;
+}
+
+/* botões Continuar / Voltar */
+.vai-volta-cadastro {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.vai-volta-cadastro a {
+    display: block;
+}
+
+.vai-volta-cadastro button {
+    width: 360px;
+    height: 56px;
+    font-size: 20px;
+    background-color: #D9D9D9;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.vai-volta-cadastro button:hover {
+    background-color: #c4c4c4;
+}
+
+/* Carrinho */
+
+.area-produtos-carrinho{
+    width: 1150px;
+    height: 662px;
+    border-radius: 22px;
+    background-color: #869DD3;
+    margin-top: 40px;
+    margin-left: 40px;
+
+
+}
+.titulo-carrinho{
+    display: flex;
+    justify-content: center;
+    background-color: #5177CC;
+    height: 60px;
+    border-radius: 22px;
+    font-size: 36px;
+    color: #FFFFFF;
+    align-items: center;
+}
+.botao-carrinho-enviar{
+    display: flex;
+    justify-content: right;
+    margin-top: 500px;
+    margin-right: 40px;
+}
+.botao-carrinho-enviar button{
+    background-color: #5177CC;
+    border-radius: 5px;
+    border-color: transparent;
+    width: 241px;
+    height: 51px;
+    font-size: 40px;
+    color: #FFFFFF;
+
+}
+
+/* fale conosco */
+
+.corpo-fale_conosco{
+     background:
+        linear-gradient(
+            168.78deg,
+            rgba(112, 155, 253, 0.33) 6.13%,
+            rgba(0, 6, 18, 0.33) 77.99%,
+            rgba(0, 0, 0, 0.33) 99.97%
+        ),
+        #709BFD;
+    min-height: 100vh;
+    color: #FFFFFF;
+}
+
+.coisas-fale_conosco{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.titulo-fale_conosco{
+
     font-size: 48px;
 }
-.titulo-cadastro p{
-    font-size: 24px;
-}
-.formulario-cadastro{
-    font-size: 24px;
-}
-.formulario-cadastro input{
+.subtitulo-fale_conosco p{
+    margin-top: 40px;
+    font-size: 36px;
+    align-self: flex-start ;
 
+}
+.caixa-fala{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.input-fale{
+    width: 827px;
+    height: 310px;
+    border-color: transparent;
+    border-radius: 5px;
+}
+.nos-enviar-botao{
+    background-color: #656565;
+    width: 165px;
+    height: 45px;
+    border-color: transparent;
+    border-radius: 5px;
+    font-size: 32px;
+    font-weight: 100;
+    margin-top: 20px;
 }
