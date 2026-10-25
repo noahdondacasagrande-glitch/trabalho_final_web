@@ -925,3 +925,243 @@
     font-weight: 100;
     margin-top: 20px;
 }
+area-cliente {
+    min-height: 100vh;
+    background-color: var(--azul-fundo);
+    font-family: "Inter", sans-serif;
+    color: var(--texto);
+    box-sizing: border-box;
+}
+ 
+.area-cliente *,
+.area-cliente *::before,
+.area-cliente *::after {
+    box-sizing: border-box;
+}
+ 
+.area-cliente p {
+    margin: 0;
+}
+ 
+.area-cliente a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+ 
+/* ---------- Header ---------- */
+.header-area_cliente {
+    display: flex;
+    align-items: center;
+    height: 87px;
+    padding: 0 20px;
+    background-color: var(--azul-header);
+    color: var(--texto-claro);
+}
+ 
+/* Logo + nome */
+.logo-area_cliente a {
+    gap: 4px;
+    color: var(--texto-claro);
+}
+ 
+.logo-area_cliente img {
+    width: 40px;
+    height: 66px;
+    object-fit: contain;
+}
+ 
+.logo-area_cliente p {
+    font-family: "Ubuntu", sans-serif;
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+ 
+/* Seu perfil */
+.mostrar-perfil {
+    margin-left: 32px;
+}
+ 
+.mostrar-perfil a {
+    gap: 22px;
+    color: var(--texto-claro);
+}
+ 
+.mostrar-perfil img {
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+}
+ 
+.mostrar-perfil p {
+    font-family: "Ubuntu", sans-serif;
+    font-size: 22px;
+}
+ 
+/* Carrinho + detalhes (lado direito) */
+.separador-direita-area_cliente {
+    display: flex;
+    align-items: center;
+    gap: 70px;
+    margin-left: auto;
+    padding-right: 30px;
+}
+ 
+.separador-direita-area_cliente img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+}
+ 
+.separador-direita-area_cliente a:hover img {
+    transform: scale(1.1);
+}
+ 
+/* ---------- Título ---------- */
+.titulo-area_cliente {
+    padding: 22px 25px 0;
+}
+ 
+.titulo-area_cliente p {
+    font-family: "Ubuntu", sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+}
+ 
+/* ---------- Formulário ---------- */
+.formulario-area-cliente {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    width: 100%;
+    max-width: 661px;
+    margin: 28px 0 0 25px;
+}
+ 
+/* CPF / CNPJ */
+.area_cliente-CPF {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+ 
+.area_cliente-CPF > p {
+    font-size: 18px;
+    font-weight: 500;
+}
+ 
+.caixa-CPF-cliente {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 56px;
+    padding: 0 18px;
+    background-color: var(--cinza-campo);
+    border-radius: 5px;
+}
+ 
+.caixa-CPF-cliente p {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.5);
+}
+ 
+/* Nome + Sobrenome lado a lado */
+.nome-sobrenome-cliente {
+    display: flex;
+    gap: 30px;
+    width: 100%;
+}
+ 
+.cliente-nome,
+.cliente-sobrenome,
+.cliente-telefone {
+    display: flex;
+    align-items: center;
+    height: 56px;
+    padding: 0 18px;
+    background-color: var(--cinza-campo);
+    border-radius: 5px;
+}
+ 
+.cliente-nome {
+    flex: 0 0 240px;
+}
+ 
+.cliente-sobrenome {
+    flex: 1;
+    min-width: 0;
+}
+ 
+.cliente-telefone {
+    width: 100%;
+}
+ 
+.cliente-nome p,
+.cliente-sobrenome p,
+.cliente-telefone p {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.6);
+}
+ 
+/* ---------- Responsivo ---------- */
+@media (max-width: 768px) {
+    .header-area_cliente {
+        height: 72px;
+        padding: 0 12px;
+    }
+ 
+    .logo-area_cliente img {
+        width: 30px;
+        height: 50px;
+    }
+ 
+    .logo-area_cliente p,
+    .mostrar-perfil p {
+        font-size: 16px;
+    }
+ 
+    .mostrar-perfil {
+        margin-left: 14px;
+    }
+ 
+    .mostrar-perfil a {
+        gap: 8px;
+    }
+ 
+    .mostrar-perfil img {
+        width: 34px;
+        height: 34px;
+    }
+ 
+    .separador-direita-area_cliente {
+        gap: 20px;
+        padding-right: 0;
+    }
+ 
+    .separador-direita-area_cliente img {
+        width: 34px;
+        height: 34px;
+    }
+ 
+    .formulario-area-cliente {
+        width: auto;
+        margin: 24px 16px 0;
+    }
+ 
+    .titulo-area_cliente {
+        padding: 18px 16px 0;
+    }
+ 
+    .nome-sobrenome-cliente {
+        flex-direction: column;
+        gap: 22px;
+    }
+ 
+    .cliente-nome {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+}
