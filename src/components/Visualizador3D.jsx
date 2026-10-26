@@ -612,16 +612,7 @@ function Visualizador3D({ arquivo }) {
                             : `${volumeConvertido.toFixed(2)} ${unidade}³ (${informacoes.volume.toFixed(2)} mm³)`}
                     </p>
 
-                    <small>
-                        A conversão altera apenas a unidade
-                        de exibição, não a escala do modelo.
-                        Os valores são interpretados nas
-                        unidades geométricas de origem como
-                        milímetros. Arquivos STL não informam
-                        necessariamente sua unidade original.
-                        O volume estimado também depende da
-                        integridade e do fechamento da malha.
-                    </small>
+
                 </div>
             )}
         </section>
