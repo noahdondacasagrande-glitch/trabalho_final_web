@@ -532,7 +532,6 @@
     color: #FFFFFF;
 }
 
-/* Os três blocos ficam empilhados verticalmente */
 .paragrafos-detalhes {
     display: block;
     width: 100%;
@@ -547,22 +546,18 @@
     margin: 0;
 }
 
-/* Primeiro texto */
 .paragrafo1-detalhes {
     margin-bottom: 24px;
 }
 
-/* Pergunta */
 .paragrafo2-detalhes {
     margin-bottom: 0;
 }
 
-/* Explicação */
 .paragrafo3-detalhes {
     margin-top: 0;
 }
 
-/* Rodapé */
 .footer-detalhes {
     width: 100%;
     min-height: 92px;
@@ -591,7 +586,6 @@
     margin: 0;
 }
 
-/* card-produtos */
 
 .card_objeto3D{
     max-width: 550px;
@@ -708,7 +702,6 @@
 }
 
 /* cadastro */
-/* cadastro */
 .corpo-cadastro {
     background-color: #9CBAFF;
     min-height: 100vh;
@@ -722,7 +715,6 @@
     padding: 40px 20px 60px;
 }
 
-/* título */
 .titulo-cadastro {
     text-align: center;
     margin-bottom: 40px;
@@ -738,7 +730,6 @@
     font-size: 24px;
 }
 
-/* formulário: 360 + 84 + 360 = 804px, mesma largura do campo de senha */
 .formulario-cadastro {
     width: 804px;
     max-width: 100%;
