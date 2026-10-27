@@ -27,7 +27,7 @@ const Fale_Conosco = () => {
                         <p>Seu tópico de ajuda</p>
                     </div>
                     <div className="mensagem-para-nos">
-                        <input
+                        <textarea
                             placeholder="Escreva..."
                             className="input-fale"
                             value={mensagem}

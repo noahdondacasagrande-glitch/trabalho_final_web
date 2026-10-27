@@ -830,31 +830,49 @@
 
 /* Carrinho */
 
+.corpo-carrinho{
+    background-color: #9CBAFF;
+    min-height: 100vh;
+    box-sizing: border-box;
+    
+}
+.coisas-carrinho{
+    display: flex;
+    justify-content: center;
+}
 .area-produtos-carrinho{
     width: 1150px;
     height: 662px;
     border-radius: 22px;
     background-color: #869DD3;
-    margin-top: 40px;
-    margin-left: 40px;
+    margin-top: 34px;
+    margin-left: 65px;
+    margin-right: 65px;
+    margin-bottom: 49px;
+    display: flex;
+    flex-direction: column;
 
-
+    
+    
 }
 .titulo-carrinho{
     display: flex;
     justify-content: center;
+    align-items: center;
     background-color: #5177CC;
     height: 60px;
+    min-width: 1150px;
+    width: 100%;
     border-radius: 22px;
     font-size: 36px;
     color: #FFFFFF;
-    align-items: center;
 }
 .botao-carrinho-enviar{
-    display: flex;
-    justify-content: right;
-    margin-top: 500px;
-    margin-right: 40px;
+    max-width: 241px;
+    max-height: 51px;
+    margin-top: 523px;
+    margin-left:875px;
+   
 }
 .botao-carrinho-enviar button{
     background-color: #5177CC;
@@ -896,6 +914,7 @@
 .subtitulo-fale_conosco p{
     font-size: 36px;
     align-self: flex-start ;
+    margin-bottom: 12px;
 }
 .caixa-fala{
     display: flex;
@@ -905,30 +924,49 @@
 
 
 .mensagem-para-nos {
-    width: 827px;
-    height: 310px;
     background-color: white; 
-    padding: 15px;           
     box-sizing: border-box;  
     display: flex;
     align-items: flex-start; 
+    border-radius: 5px;     
+    min-height: 309px;
+    min-width: 826px;
+    max-height: 310px;
+    max-width: 827px;
+
 }
 
 .input-fale {
-    width: 100%;
-    height: auto;            
+    width: 100%;            
     border: none;            
-    
+    outline: 0;
     background: transparent; 
-    text-align: left;       
-}
-.input-fale input{
-    height: 310px;
+    text-align: left;  
+    border-radius: 5px; 
+    min-height: 309px;
+    min-width: 826px;
+    max-height: 310px;
     max-width: 827px;
+    font-size: 24px;
+    padding: 9px;
+
+
+
+}
+.input-fale textarea{
+    min-height: 309px;
+    min-width: 826px;
+    max-height: 310px;
+    max-width: 827px;
+    border-radius: 5px ;
+    resize: vertical;
+    font-size: 24px;
+    padding: 9px;
 }
 
 .input-fale::placeholder {
     text-align: left;
+    font-size: 24px;
 }
 
 .nos-enviar-botao{
@@ -1013,7 +1051,6 @@
     font-size: 22px;
 }
 
-/* Carrinho + detalhes (lado direito) */
 .separador-direita-area_cliente {
     display: flex;
     align-items: center;
