@@ -588,7 +588,7 @@
 
 
 .card_objeto3D{
-    max-width: 550px;
+    max-width: 500px;
     max-height: 660px; 
     height: 100%;
     width: 100%;
@@ -600,7 +600,8 @@
     border-radius: 10px;
     padding: 0;
     overflow: hidden; 
-    margin: 40px;
+    margin: 100px;
+    
 }
 
 .envelopar-card{
@@ -611,8 +612,10 @@
     align-items: center;
     background-color: #F6F6F6;
     border-radius: 5px;
-    margin-top: 20px; 
-    margin-bottom: 20px;
+    margin-top: 30px; 
+    margin-bottom: 30px;
+    margin-left: 39px;
+    margin-right: 38px;
 }
 
 .falsa-descricao{
@@ -643,35 +646,36 @@
     background-color: #709BFD;
 }
 
-.produto.cards{
+.produto-cards div{
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 50px;
+    
 }
 .faixa1-produtos{
     display: flex;
     flex-direction: row;
-    padding: 40px;
+    justify-content: center;
+
 }
 
 .faixa2-produtos{
     display: flex;
     flex-direction: row;
-    padding: 40px;
+    justify-content: center;
 }
 
 .faixa3-produtos{
     display: flex;
     flex-direction: row;
-    padding: 40px;
+    justify-content: center;
 
 }
 
 .faixa4-produtos{
     display: flex;
     flex-direction: row;
-    padding: 40px;
+    justify-content: center;
 
 }
 
@@ -886,14 +890,12 @@
 }
 
 .titulo-fale_conosco{
-
+    margin: 36px;
     font-size: 48px;
 }
 .subtitulo-fale_conosco p{
-    margin-top: 40px;
     font-size: 36px;
     align-self: flex-start ;
-
 }
 .caixa-fala{
     display: flex;
@@ -901,14 +903,36 @@
     flex-direction: column;
 }
 
-.input-fale{
+
+.mensagem-para-nos {
     width: 827px;
     height: 310px;
-    border-color: transparent;
-    border-radius: 5px;
+    background-color: white; 
+    padding: 15px;           
+    box-sizing: border-box;  
+    display: flex;
+    align-items: flex-start; 
 }
+
+.input-fale {
+    width: 100%;
+    height: auto;            
+    border: none;            
+    
+    background: transparent; 
+    text-align: left;       
+}
+.input-fale input{
+    height: 310px;
+    max-width: 827px;
+}
+
+.input-fale::placeholder {
+    text-align: left;
+}
+
 .nos-enviar-botao{
-    background-color: #656565;
+    background-color: #4466D5;
     width: 165px;
     height: 45px;
     border-color: transparent;
@@ -916,14 +940,11 @@
     font-size: 32px;
     font-weight: 100;
     margin-top: 20px;
+    color: white;
 }
-/* =========================================================
-   Area_Cliente.css  —  SHARK3D
-   Baseado no layout "MacBook Air - 11" (1280 x 832)
-   Cole no FINAL do index.css (apague o bloco antigo que comeca em "area-cliente {")
-   ========================================================= */
 
-/* ---------- Base da página ---------- */
+/* area cliente */
+
 .area-cliente {
     min-height: 100vh;
     background-color: #9CBAFF;
@@ -943,7 +964,6 @@
     color: inherit;
 }
 
-/* ---------- Header ---------- */
 .header-area_cliente {
     display: flex;
     align-items: center;
@@ -1061,7 +1081,6 @@
     color: rgba(0, 0, 0, 0.5);
 }
 
-/* Nome + Sobrenome lado a lado */
 .nome-sobrenome-cliente {
     display: flex;
     gap: 30px;
@@ -1099,62 +1118,3 @@
     color: rgba(0, 0, 0, 0.6);
 }
 
-/* ---------- Responsivo ---------- */
-@media (max-width: 768px) {
-    .header-area_cliente {
-        height: 72px;
-        padding: 0 12px;
-    }
-
-    .logo-area_cliente img {
-        width: 30px;
-        height: 50px;
-    }
-
-    .logo-area_cliente p,
-    .mostrar-perfil p {
-        font-size: 16px;
-    }
-
-    .mostrar-perfil {
-        margin-left: 14px;
-    }
-
-    .mostrar-perfil a {
-        gap: 8px;
-    }
-
-    .mostrar-perfil img {
-        width: 34px;
-        height: 34px;
-    }
-
-    .separador-direita-area_cliente {
-        gap: 20px;
-        padding-right: 0;
-    }
-
-    .separador-direita-area_cliente img {
-        width: 34px;
-        height: 34px;
-    }
-
-    .formulario-area-cliente {
-        width: auto;
-        margin: 24px 16px 0;
-    }
-
-    .titulo-area_cliente {
-        padding: 18px 16px 0;
-    }
-
-    .nome-sobrenome-cliente {
-        flex-direction: column;
-        gap: 22px;
-    }
-
-    .cliente-nome {
-        flex: 0 0 auto;
-        width: 100%;
-    }
-}
