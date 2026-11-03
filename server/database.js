@@ -1,17 +1,18 @@
 
 import { createClient } from "@libsql/client";
 
-if (!process.env.TURSO_DATABASE_URL) {
-    throw new Error("TURSO_DATABASE_URL não foi configurada.");
-}
+const url = process.env.TURSO_DATABASE_URL;
+const authToken = process.env.TURSO_AUTH_TOKEN;
 
-if (!process.env.TURSO_AUTH_TOKEN) {
-    throw new Error("TURSO_AUTH_TOKEN não foi configurado.");
+if (!url || !authToken) {
+    throw new Error(
+        "As variáveis TURSO_DATABASE_URL e TURSO_AUTH_TOKEN precisam estar configuradas."
+    );
 }
 
 const db = createClient({
-    url: process.env.TURSO_DATABASE_URL,
-    authToken: process.env.TURSO_AUTH_TOKEN,
+    url,
+    authToken,
 });
 
 export default db;

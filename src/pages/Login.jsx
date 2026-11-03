@@ -5,17 +5,6 @@ import oculto from "../assets/images/oculto.png";
 import {Link} from "react-router-dom"
 
 const Login = () => {
-    function login() {
-        var emailUsuario = document.getElementById("email").value;
-        var senha = document.getElementById("senha").value;
-
-        const usuario = {
-            nome: emailUsuario,
-            senha: senha
-        };
-
-        localStorage.setItem("usuarioConfig", JSON.stringify(usuario));
-    }
 
     return (
         <div className="corpo-login">
@@ -32,10 +21,24 @@ const Login = () => {
                 </div>
 
                 <div className="escolher-entrada-conta">
-                    <div className="entrar-google">
-                        <img src={google_logo} alt="Google" />
-                        <p>entrar com google</p>
-                    </div>
+                    
+                        <div className="g_id_onload"
+                            data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                            data-context="signin"
+                            data-ux_mode="redirect"
+                            data-login_uri="https://your.domain/your_login_endpoint"
+                            data-itp_support="true">
+                        </div>
+
+                        <div className="g_id_signin"
+                            data-type="standard"
+                            data-shape="rectangular"
+                            data-theme="outline"
+                            data-text="signin_with"
+                            data-size="large"
+                            data-logo_alignment="left">
+                        </div>
+
 
                     <div className="entrar-email">
                         <img src={email} alt="E-mail" />

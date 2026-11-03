@@ -185,7 +185,7 @@
 
 }
 
-.entrar-google{
+/* .entrar-google{
     background-color: #5177CC;
     border: 1px #00216C;
     width: 295px;
@@ -194,6 +194,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+} */
+.g_id_onload{
+        background-color: #5177CC;
+    border: 1px #00216C;
+    width: 295px;
+    height: 79px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
 
 .entrar-email{
