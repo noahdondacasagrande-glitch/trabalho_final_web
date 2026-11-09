@@ -22,24 +22,10 @@ const Login = () => {
 
                 <div className="escolher-entrada-conta">
                     
-                        <div className="g_id_onload"
-                            data-client_id="YOUR_GOOGLE_CLIENT_ID"
-                            data-context="signin"
-                            data-ux_mode="redirect"
-                            data-login_uri="https://your.domain/your_login_endpoint"
-                            data-itp_support="true">
-                        </div>
-
-                        <div className="g_id_signin"
-                            data-type="standard"
-                            data-shape="rectangular"
-                            data-theme="outline"
-                            data-text="signin_with"
-                            data-size="large"
-                            data-logo_alignment="left">
-                        </div>
-
-
+                    <div className="entrar-google">
+                        <img src={google_logo} alt="Google" />
+                        <p>entrar com Google</p>
+                    </div>
                     <div className="entrar-email">
                         <img src={email} alt="E-mail" />
                         <p>entrar com email</p>
