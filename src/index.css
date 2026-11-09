@@ -1240,9 +1240,12 @@
 }
 
 .produtos-conteudo {
-    width: 1600px;
+    width: 100%;
+    max-width: 1600px;
     margin: 0 auto;
     padding: 24px 42px 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .produtos-cards {
