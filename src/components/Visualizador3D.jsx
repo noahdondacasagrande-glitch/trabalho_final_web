@@ -1,6 +1,4 @@
-
 import { useEffect, useRef, useState } from "react";
-
 import * as THREE from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -8,7 +6,6 @@ import { STLLoader } from "three/addons/loaders/STLLoader.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 import { ThreeMFLoader } from "three/addons/loaders/3MFLoader.js";
 
-// Fatores de conversão para milímetros.
 const FATOR_PARA_MM = {
     mm: 1,
     cm: 10,
@@ -89,8 +86,6 @@ function Visualizador3D({ arquivo }) {
 
         cena.add(grade);
 
-        // Remove triângulos sem área do STL.
-        // Isso não altera a escala da geometria válida.
         function limparGeometriaSTL(geometriaOriginal) {
             const posicoes =
                 geometriaOriginal.getAttribute("position");
@@ -122,7 +117,6 @@ function Visualizador3D({ arquivo }) {
                 b.fromBufferAttribute(posicoes, i + 1);
                 c.fromBufferAttribute(posicoes, i + 2);
 
-                // Descarta triângulos com coordenadas inválidas.
                 const coordenadasValidas = [
                     a.x, a.y, a.z,
                     b.x, b.y, b.z,
@@ -139,7 +133,6 @@ function Visualizador3D({ arquivo }) {
 
                 const areaDobrada = cruzado.length();
 
-                // Triângulos sem área não formam uma superfície.
                 if (
                     !Number.isFinite(areaDobrada) ||
                     areaDobrada <= 1e-10
@@ -177,7 +170,6 @@ function Visualizador3D({ arquivo }) {
             return geometria;
         }
 
-        // Calcula o volume geométrico da malha.
         function calcularVolume(raiz) {
             let volumeTotal = 0;
             let encontrouMalha = false;
@@ -276,7 +268,6 @@ function Visualizador3D({ arquivo }) {
 
                 if (cancelado) return;
 
-                // Carregamento de arquivos STL.
                 if (extensao === "stl") {
                     const geometriaOriginal =
                         new STLLoader().parse(buffer);
@@ -296,7 +287,6 @@ function Visualizador3D({ arquivo }) {
                         material
                     );
 
-                // Carregamento de arquivos OBJ.
                 } else if (extensao === "obj") {
                     const texto =
                         new TextDecoder().decode(buffer);
@@ -314,7 +304,6 @@ function Visualizador3D({ arquivo }) {
                         }
                     });
 
-                // Carregamento de arquivos 3MF.
                 } else if (extensao === "3mf") {
                     objeto = new ThreeMFLoader().parse(buffer);
 
@@ -348,7 +337,6 @@ function Visualizador3D({ arquivo }) {
 
                 objeto.updateMatrixWorld(true);
 
-                // Mede a extensão da geometria válida.
                 const caixa = new THREE.Box3()
                     .setFromObject(objeto);
 
@@ -366,7 +354,6 @@ function Visualizador3D({ arquivo }) {
                     new THREE.Vector3()
                 );
 
-                // Centraliza o modelo sem alterar sua escala.
                 objeto.position.sub(centro);
 
                 cena.add(objeto);
@@ -378,7 +365,6 @@ function Visualizador3D({ arquivo }) {
                     1
                 );
 
-                // Enquadra o objeto na câmera.
                 camera.position.set(
                     maiorDimensao * 1.5,
                     maiorDimensao * 1.2,
@@ -405,8 +391,6 @@ function Visualizador3D({ arquivo }) {
 
                 const volume = calcularVolume(objeto);
 
-                // Mantém as medidas geométricas originais.
-                // O seletor não modifica o modelo 3D.
                 setInformacoes({
                     x: tamanho.x,
                     y: tamanho.y,
@@ -508,11 +492,8 @@ function Visualizador3D({ arquivo }) {
         };
     }, [arquivo]);
 
-    // Fator que indica quantos milímetros existem
-    // em cada unidade selecionada.
     const fator = FATOR_PARA_MM[unidade];
 
-    // Conversão das dimensões para a unidade escolhida.
     const largura = informacoes
         ? informacoes.x / fator
         : 0;
@@ -525,94 +506,127 @@ function Visualizador3D({ arquivo }) {
         ? informacoes.z / fator
         : 0;
 
-    // Conversão cúbica do volume.
     const volumeConvertido =
         informacoes?.volume != null
             ? informacoes.volume / (fator ** 3)
             : null;
 
     return (
-        <section>
-            <h2>Visualização do modelo 3D</h2>
+        <section className="visualizador3d-painel">
+            <div className="visualizador3d-cabecalho">
+                <div>
+                    <h2>Visualização do modelo 3D</h2>
+                    <p>
+                        Visualize, gire e confira as dimensões do seu modelo.
+                    </p>
+                </div>
 
-            <div
-                ref={areaRef}
-                style={{
-                    width: "100%",
-                    height: "400px",
-                    border: "1px solid #ccc",
-                    borderRadius: "8px",
-                    overflow: "hidden"
-                }}
-            />
+                <span className="visualizador3d-formato">
+                    STL · OBJ · 3MF
+                </span>
+            </div>
 
-            {!arquivo && !erro && (
-                <p>
-                    Selecione um modelo STL, OBJ ou 3MF
-                    para visualizar.
+            <div className="visualizador3d-area">
+                <div
+                    ref={areaRef}
+                    className="visualizador3d-canvas"
+                />
+
+                {!arquivo && !erro && (
+                    <div className="visualizador3d-vazio">
+                        <span
+                            className="visualizador3d-icone"
+                            aria-hidden="true"
+                        >
+                            3D
+                        </span>
+
+                        <strong>Nenhum modelo carregado</strong>
+
+                        <p>
+                            Selecione um arquivo para começar a visualização.
+                        </p>
+                    </div>
+                )}
+            </div>
+
+            {erro && (
+                <p
+                    className="visualizador3d-erro"
+                    role="alert"
+                >
+                    {erro}
                 </p>
             )}
 
-            {erro && (
-                <p role="alert">{erro}</p>
-            )}
-
             {informacoes && (
-                <div>
-                    <h3>Medidas do modelo</h3>
+                <div className="medidas-modelo">
+                    <div className="medidas-modelo-cabecalho">
+                        <div>
+                            <h3>Dimensões do modelo</h3>
+                            <p>
+                                Medidas calculadas a partir da geometria carregada.
+                            </p>
+                        </div>
 
-                    <label htmlFor="unidade">
-                        Unidade de exibição:
-                    </label>
+                        <div className="medidas-unidade">
+                            <label htmlFor="unidade">Unidade:</label>
 
-                    <select
-                        id="unidade"
-                        value={unidade}
-                        onChange={(event) =>
-                            setUnidade(event.target.value)
-                        }
-                    >
-                        <option value="mm">
-                            Milímetros (mm)
-                        </option>
+                            <select
+                                id="unidade"
+                                value={unidade}
+                                onChange={(event) =>
+                                    setUnidade(event.target.value)
+                                }
+                            >
+                                <option value="mm">Milímetros (mm)</option>
+                                <option value="cm">Centímetros (cm)</option>
+                                <option value="m">Metros (m)</option>
+                            </select>
+                        </div>
+                    </div>
 
-                        <option value="cm">
-                            Centímetros (cm)
-                        </option>
+                    <div className="medidas-modelo-grade">
+                        <div className="medida-item">
+                            <span>Largura (X)</span>
+                            <strong>
+                                {largura.toFixed(2)} <small>{unidade}</small>
+                            </strong>
+                            <small>{informacoes.x.toFixed(2)} mm</small>
+                        </div>
 
-                        <option value="m">
-                            Metros (m)
-                        </option>
-                    </select>
+                        <div className="medida-item">
+                            <span>Altura (Y)</span>
+                            <strong>
+                                {altura.toFixed(2)} <small>{unidade}</small>
+                            </strong>
+                            <small>{informacoes.y.toFixed(2)} mm</small>
+                        </div>
 
-                    <p>
-                        Largura X: {largura.toFixed(2)} {unidade}
-                        {" "}(
-                        {informacoes.x.toFixed(2)} mm)
-                    </p>
+                        <div className="medida-item">
+                            <span>Profundidade (Z)</span>
+                            <strong>
+                                {profundidade.toFixed(2)} <small>{unidade}</small>
+                            </strong>
+                            <small>{informacoes.z.toFixed(2)} mm</small>
+                        </div>
 
-                    <p>
-                        Altura Y: {altura.toFixed(2)} {unidade}
-                        {" "}(
-                        {informacoes.y.toFixed(2)} mm)
-                    </p>
+                        <div className="medida-item medida-volume">
+                            <span>Volume geométrico estimado</span>
 
-                    <p>
-                        Profundidade Z:{" "}
-                        {profundidade.toFixed(2)} {unidade}
-                        {" "}(
-                        {informacoes.z.toFixed(2)} mm)
-                    </p>
+                            <strong>
+                                {volumeConvertido === null
+                                    ? "Indisponível"
+                                    : `${volumeConvertido.toFixed(2)} ${unidade}³`}
+                            </strong>
 
-                    <p>
-                        Volume geométrico estimado:{" "}
-
-                        {volumeConvertido === null
-                            ? "indisponível"
-                            : `${volumeConvertido.toFixed(2)} ${unidade}³ (${informacoes.volume.toFixed(2)} mm³)`}
-                    </p>
-
-
+                            {volumeConvertido !== null && (
+                                <small>
+                                    {informacoes.volume.toFixed(2)} mm³
+                                </small>
+                            )}
+                        </div>
+                    </div>
                 </div>
             )}
         </section>

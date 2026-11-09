@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -6,7 +5,6 @@ import logo from "../assets/images/logo.png";
 import carrinho from "../assets/images/carrinho.png";
 import detalhes from "../assets/images/detalhes.png";
 import login from "../assets/images/login.png";
-
 
 import Card from "../components/Card_objeto3D";
 import Arquivo3D from "../components/Arquivo3D.jsx";
@@ -34,9 +32,8 @@ const Produtos = () => {
                                 placeholder="Pesquisar"
                             />
                         </div>
-                       
 
-                        <Link to="/carrinho">
+                        <Link to="/carrinho" aria-label="Carrinho">
                             <img src={carrinho} alt="Carrinho" />
                         </Link>
 
@@ -59,34 +56,39 @@ const Produtos = () => {
                 </div>
             </div>
 
-            <div className="produtos-cards">
-                <div className="faixa1-produtos">
-                    <Card  className="card1"/>
-                    <Card  className="card2" />
-                </div>
-                <div className="faixa2-produtos">
-                    <Card  className="card3" />
-                    <Card  className="card4" />
-                </div>
-                <div className="faixa3-produtos">
-                    <Card className="card5" />
-                    <Card  className="card6" />
-                </div>
-                <div className="faixa4-produtos">
-                    <Card className="card7" />
-                    <Card className="card8" />
-                </div>
-            </div>
+            <main className="produtos-conteudo">
+                <div className="produtos-cards">
+                    <div className="faixa1-produtos">
+                        <Card className="card1" />
+                        <Card className="card2" />
+                    </div>
 
-            <div className="fazer-upload">
-                <Arquivo3D
-                    onArquivoSelecionado={setArquivo}
-                />
+                    <div className="faixa2-produtos">
+                        <Card className="card3" />
+                        <Card className="card4" />
+                    </div>
 
-                <Visualizador3D arquivo={arquivo} />
-            </div>
+                    <div className="faixa3-produtos">
+                        <Card className="card5" />
+                        <Card className="card6" />
+                    </div>
 
-            <div className="footer-produtos">
+                    <div className="faixa4-produtos">
+                        <Card className="card7" />
+                        <Card className="card8" />
+                    </div>
+                </div>
+
+                <section
+                    className="fazer-upload"
+                    aria-label="Envio e visualização de modelo 3D"
+                >
+                    <Arquivo3D onArquivoSelecionado={setArquivo} />
+                    <Visualizador3D arquivo={arquivo} />
+                </section>
+            </main>
+
+            <footer className="footer-produtos">
                 <Link
                     to="/solucoes"
                     className="produtos-para-solucoes"
@@ -107,7 +109,7 @@ const Produtos = () => {
                 >
                     Público alvo
                 </Link>
-            </div>
+            </footer>
         </div>
     );
 };

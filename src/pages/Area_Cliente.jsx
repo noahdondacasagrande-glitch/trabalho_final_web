@@ -17,13 +17,7 @@ const Area_Cliente = () => {
                         <p>SHARK3D</p>
                     </Link>
                 </div>
-                <div className="mostrar-perfil">
-                    <Link to="/sobre">
-                        <img src={login} alt="" />
-                        <p>Seu perfil</p>
-                    </Link>
-                    
-                </div>
+
                 <div className="separador-direita-area_cliente">
                     <Link to="/carrinho">
                         <img src={carrinho} alt="" />

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 function Arquivo3D({ onArquivoSelecionado }) {
@@ -13,10 +12,7 @@ function Arquivo3D({ onArquivoSelecionado }) {
 
         const extensoes = [".stl", ".obj", ".3mf"];
         const nome = file.name.toLowerCase();
-
-        const extensaoValida = extensoes.some((ext) =>
-            nome.endsWith(ext)
-        );
+        const extensaoValida = extensoes.some((ext) => nome.endsWith(ext));
 
         if (!extensaoValida) {
             setMensagem("Selecione um arquivo STL, OBJ ou 3MF.");
@@ -57,10 +53,7 @@ function Arquivo3D({ onArquivoSelecionado }) {
                 body: dados
             });
 
-            // Lê o corpo uma única vez e aceita respostas
-            // JSON ou texto simples, sem quebrar se vier vazio.
             const texto = await resposta.text();
-
             let resultado = {};
 
             if (texto.trim()) {
@@ -109,25 +102,62 @@ function Arquivo3D({ onArquivoSelecionado }) {
     }
 
     return (
-        <section>
-            <h2>Enviar modelo 3D</h2>
+        <section className="arquivo3d-painel">
+            <div className="arquivo3d-cabecalho">
+                <span className="arquivo3d-etiqueta">IMPRESSÃO 3D</span>
+                <h2>Envie seu modelo</h2>
+                <p>
+                    Faça o upload do arquivo para visualizar o modelo e conferir
+                    suas dimensões.
+                </p>
+            </div>
 
-            <input
-                type="file"
-                accept=".stl,.obj,.3mf"
-                onChange={selecionarArquivo}
-                disabled={carregando}
-            />
+            <div className="arquivo3d-selecao">
+                <input
+                    id="arquivo3d-input"
+                    className="arquivo3d-input"
+                    type="file"
+                    accept=".stl,.obj,.3mf"
+                    onChange={selecionarArquivo}
+                    disabled={carregando}
+                />
+
+                <label
+                    className="arquivo3d-selecionar"
+                    htmlFor="arquivo3d-input"
+                >
+                    <span className="arquivo3d-upload-icone" aria-hidden="true">
+                        ↑
+                    </span>
+                    <strong>Escolher arquivo 3D</strong>
+                    <small>STL, OBJ ou 3MF · Máximo de 4 MB</small>
+                </label>
+            </div>
 
             {arquivo && (
-                <p>
-                    Arquivo: {arquivo.name}
-                    <br />
-                    Tamanho: {(arquivo.size / 1024 / 1024).toFixed(2)} MB
-                </p>
+                <div className="arquivo3d-arquivo-selecionado">
+                    <span className="arquivo3d-arquivo-icone" aria-hidden="true">
+                        3D
+                    </span>
+
+                    <div className="arquivo3d-arquivo-dados">
+                        <strong>{arquivo.name}</strong>
+                        <small>
+                            {(arquivo.size / 1024 / 1024).toFixed(2)} MB
+                        </small>
+                    </div>
+
+                    <span
+                        className="arquivo3d-check"
+                        aria-label="Arquivo selecionado"
+                    >
+                        ✓
+                    </span>
+                </div>
             )}
 
             <button
+                className="arquivo3d-botao-enviar"
                 type="button"
                 onClick={enviarArquivo}
                 disabled={!arquivo || carregando}
@@ -135,7 +165,11 @@ function Arquivo3D({ onArquivoSelecionado }) {
                 {carregando ? "Enviando..." : "Enviar e processar"}
             </button>
 
-            <p role="status" aria-live="polite">
+            <p
+                className="arquivo3d-mensagem"
+                role="status"
+                aria-live="polite"
+            >
                 {mensagem}
             </p>
         </section>
