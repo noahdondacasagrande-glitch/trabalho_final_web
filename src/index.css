@@ -192,18 +192,7 @@
     margin-top: 20px;
 }
 
-/* .entrar-google {
-    background-color: #5177CC;
-    border: 1px #00216C;
-    width: 295px;
-    height: 79px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-} */
-
-.g_id_onload {
+.entrar-google {
     background-color: #5177CC;
     border: 1px #00216C;
     width: 295px;
@@ -213,6 +202,8 @@
     justify-content: center;
     align-items: center;
 }
+
+
 
 .entrar-email {
     background-color: #5177CC;
@@ -224,6 +215,7 @@
     justify-content: center;
     align-items: center;
 }
+
 
 .divisoria {
     display: flex;
